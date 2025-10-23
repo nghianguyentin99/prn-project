@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using PCShop.Models;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,9 +17,20 @@ namespace PCShop
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private User _currentUser;
+
+        public MainWindow(User user)
         {
             InitializeComponent();
+            _currentUser = user;
+
+            Title = $"PCShop - Xin chào, {_currentUser.FullName}";
+
+            //if (_currentUser.Role == 1) // Staff
+            //{
+            //    // Ẩn hoặc khóa chức năng admin
+            //    btnUserManagement.IsEnabled = false;
+            //}
         }
     }
 }
