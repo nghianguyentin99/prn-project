@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PCShop.View"
         mc:Ignorable="d"
-        Title="Login" Height="450" Width="800">
+        Title="Hệ thống quản lý kho - PCShop"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
