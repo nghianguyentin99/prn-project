@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\PRN212\PCShop\PCShop\obj\Debug\net8.0-windows\
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\
 PCShop
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-D:\PRN212\PCShop\PCShop\App.xaml
-11407045341
+D:\PRN212\PC_SHOP\prn-project\App.xaml
+4-186593645
 
-4-1647462839
-233-1099242344
-MainWindow.xaml;
+2076248598
+233-441616857
+MainWindow.xaml;View\Footer.xaml;View\Header.xaml;View\Login.xaml;
 
 False
 
