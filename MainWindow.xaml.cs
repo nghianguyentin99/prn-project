@@ -22,9 +22,12 @@ namespace PCShop
         public MainWindow(User user)
         {
             InitializeComponent();
+            
             _currentUser = user;
 
             Title = $"PCShop - Xin chào, {_currentUser.FullName}";
+
+       
 
             //if (_currentUser.Role == 1) // Staff
             //{
