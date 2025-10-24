@@ -1,0 +1,33 @@
+﻿<Window x:Class="PCShop.View.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PCShop.View"
+        mc:Ignorable="d"
+        Title="Login" Height="450" Width="800">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="ĐĂNG NHẬP" 
+                   FontSize="22" FontWeight="Bold"
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <StackPanel Grid.Row="1" Margin="20">
+            <Label Content="Tên đăng nhập:"/>
+            <TextBox x:Name="txtUsername" Width="250" Height="30"/>
+
+            <Label Content="Mật khẩu:" Margin="0,10,0,0"/>
+            <PasswordBox x:Name="txtPassword" Width="250" Height="30"/>
+
+            <Button Content="Đăng nhập" Width="100" Height="35" 
+                    Margin="0,20,0,0"
+                    HorizontalAlignment="Center"
+                    Click="BtnLogin_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
