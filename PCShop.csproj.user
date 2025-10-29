@@ -2,7 +2,19 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="View\Admin\CategoryManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\Admin\SupplierManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\Admin\UserManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\Login.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\ProductManagementView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

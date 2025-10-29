@@ -24,9 +24,36 @@ namespace PCShop.View.Shared
             InitializeComponent();
         }
 
+        // ---------- HÀM MỚI ----------
+        // Hàm này được gọi bởi MainWindow để cập nhật thông tin
+        public void SetUser(Models.User user)
+        {
+            if (user != null)
+            {
+                string role = (user.Role == 0) ? "Admin" : "Staff";
+                txtUser.Text = $"Xin chào, {user.FullName} ({role})";
+            }
+        }
+        // -----------------------------
+
+        // ---------- SỬA ĐỔI LOGIC ĐĂNG XUẤT ----------
         private void BtnLogout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Đăng xuất thành công!");
+            if (MessageBox.Show("Bạn có chắc chắn muốn đăng xuất?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                // Tìm Window cha (MainWindow) và đóng nó
+                Window parentWindow = Window.GetWindow(this);
+                if (parentWindow != null)
+                {
+                    // Mở lại cửa sổ Login
+                    Login loginWindow = new Login();
+                    loginWindow.Show();
+
+                    // Đóng cửa sổ hiện tại (MainWindow)
+                    parentWindow.Close();
+                }
+            }
         }
+        // ---------------------------------------------
     }
 }

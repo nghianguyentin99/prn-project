@@ -1,0 +1,98 @@
+﻿<UserControl x:Class="PCShop.View.ProductManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PCShop.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000"
+             Background="White" Loaded="UserControl_Loaded">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Quản Lý Sản Phẩm" FontSize="24" FontWeight="Bold" Margin="0,0,0,15"/>
+
+        <DataGrid Grid.Row="1" x:Name="dgProducts" AutoGenerateColumns="False" 
+                  CanUserAddRows="False" IsReadOnly="True" 
+                  SelectionChanged="dgProducts_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding ProductId}" Width="50"/>
+                <DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding Name}" Width="2*"/>
+                <DataGridTextColumn Header="Danh mục" Binding="{Binding Category.CategoryName}" Width="120"/>
+                <DataGridTextColumn Header="Nhà CC" Binding="{Binding Supplier.Name}" Width="120"/>
+                <DataGridTextColumn Header="Kho" Binding="{Binding Warehouse.WarehouseName}" Width="120"/>
+                <DataGridTextColumn Header="Giá bán" Binding="{Binding Price, StringFormat={}{0:N0} VNĐ}" Width="120"/>
+                <DataGridTextColumn Header="Đơn vị" Binding="{Binding Unit}" Width="80"/>
+                <DataGridTextColumn Header="Tồn kho" Binding="{Binding Quantity}" Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="2" Background="#f9f9f9" BorderBrush="#e0e0e0" BorderThickness="0,1,0,0" Padding="20" Margin="0,10,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Content="ID:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox x:Name="txtProductID" Grid.Row="0" Grid.Column="1" Margin="5" IsReadOnly="True" Background="#eee"/>
+
+                    <Label Content="Tên SP (*):" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox x:Name="txtName" Grid.Row="1" Grid.Column="1" Margin="5"/>
+
+                    <Label Content="Đơn vị (*):" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox x:Name="txtUnit" Grid.Row="2" Grid.Column="1" Margin="5" Text="Cái"/>
+
+                    <Label Content="Giá bán (*):" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox x:Name="txtPrice" Grid.Row="3" Grid.Column="1" Margin="5" Text="0"/>
+
+                    <Label Content="Tồn kho:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+                    <TextBox x:Name="txtQuantity" Grid.Row="4" Grid.Column="1" Margin="5" IsReadOnly="True" Background="#eee" Text="0"
+                             ToolTip="Số lượng tồn kho được quản lý tự động qua phiếu Nhập/Xuất."/>
+
+
+                    <Label Content="Danh mục (*):" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <ComboBox x:Name="cmbCategory" Grid.Row="0" Grid.Column="3" Margin="5" 
+                              DisplayMemberPath="CategoryName" SelectedValuePath="CategoryId"/>
+
+                    <Label Content="Nhà CC (*):" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <ComboBox x:Name="cmbSupplier" Grid.Row="1" Grid.Column="3" Margin="5" 
+                              DisplayMemberPath="Name" SelectedValuePath="SupplierId"/>
+
+                    <Label Content="Kho (*):" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="5"/>
+                    <ComboBox x:Name="cmbWarehouse" Grid.Row="2" Grid.Column="3" Margin="5" 
+                              DisplayMemberPath="WarehouseName" SelectedValuePath="WarehouseId"/>
+
+                    <Label Content="Mô tả:" Grid.Row="3" Grid.Column="2" VerticalAlignment="Top" Margin="5"/>
+                    <TextBox x:Name="txtDescription" Grid.Row="3" Grid.Column="3" Grid.RowSpan="2" Margin="5" Height="60" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                </Grid>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Margin="20,0,0,0">
+                    <Button x:Name="btnNew" Content="Làm mới" Click="btnNew_Click" Width="120" Margin="5" Background="#DDDDDD"/>
+                    <Button x:Name="btnAdd" Content="Thêm sản phẩm" Click="btnAdd_Click" Width="120" Margin="5" Background="#27AE60" Foreground="White"/>
+                    <Button x:Name="btnUpdate" Content="Cập nhật thông tin" Click="btnUpdate_Click" Width="120" Margin="5" Background="#2980B9" Foreground="White"/>
+                    <Button x:Name="btnDelete" Content="Xóa (Ngừng KD)" Click="btnDelete_Click" Width="120" Margin="5" Background="#C0392B" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

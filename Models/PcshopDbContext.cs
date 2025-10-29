@@ -40,15 +40,17 @@ public partial class PcshopDbContext : DbContext
     {
         var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-        if (!optionsBuilder.IsConfigured) { optionsBuilder.UseSqlServer(config.GetConnectionString("MyCnn")); }
-
-
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(config.GetConnectionString("MyCnn"));
+        }
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Categori__19093A2B1262CF25");
+            entity.HasKey(e => e.CategoryId).HasName("PK__Categori__19093A2BA149A51A");
 
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.CategoryName).HasMaxLength(100);
@@ -57,7 +59,7 @@ public partial class PcshopDbContext : DbContext
 
         modelBuilder.Entity<Inventory>(entity =>
         {
-            entity.HasKey(e => e.InventoryId).HasName("PK__Inventor__F5FDE6D339440570");
+            entity.HasKey(e => e.InventoryId).HasName("PK__Inventor__F5FDE6D3FE3611CB");
 
             entity.ToTable("Inventory");
 
@@ -74,17 +76,17 @@ public partial class PcshopDbContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Inventory__Produ__5DCAEF64");
+                .HasConstraintName("FK__Inventory__Produ__5EBF139D");
 
             entity.HasOne(d => d.Warehouse).WithMany(p => p.Inventories)
                 .HasForeignKey(d => d.WarehouseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Inventory__Wareh__5EBF139D");
+                .HasConstraintName("FK__Inventory__Wareh__5FB337D6");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.ProductId).HasName("PK__Products__B40CC6EDB7DDAE97");
+            entity.HasKey(e => e.ProductId).HasName("PK__Products__B40CC6ED7FA88D15");
 
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
@@ -98,20 +100,20 @@ public partial class PcshopDbContext : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK__Products__Catego__5629CD9C");
+                .HasConstraintName("FK__Products__Catego__571DF1D5");
 
             entity.HasOne(d => d.Supplier).WithMany(p => p.Products)
                 .HasForeignKey(d => d.SupplierId)
-                .HasConstraintName("FK__Products__Suppli__571DF1D5");
+                .HasConstraintName("FK__Products__Suppli__5812160E");
 
             entity.HasOne(d => d.Warehouse).WithMany(p => p.Products)
                 .HasForeignKey(d => d.WarehouseId)
-                .HasConstraintName("FK__Products__Wareho__5812160E");
+                .HasConstraintName("FK__Products__Wareho__59063A47");
         });
 
         modelBuilder.Entity<SalesOrder>(entity =>
         {
-            entity.HasKey(e => e.SalesId).HasName("PK__SalesOrd__C952FB12ED090BA4");
+            entity.HasKey(e => e.SalesId).HasName("PK__SalesOrd__C952FB12B2B97299");
 
             entity.Property(e => e.SalesId).HasColumnName("SalesID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
@@ -123,16 +125,16 @@ public partial class PcshopDbContext : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.SalesOrders)
                 .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__SalesOrde__Produ__6D0D32F4");
+                .HasConstraintName("FK__SalesOrde__Produ__6E01572D");
 
             entity.HasOne(d => d.User).WithMany(p => p.SalesOrders)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__SalesOrde__UserI__6C190EBB");
+                .HasConstraintName("FK__SalesOrde__UserI__6D0D32F4");
         });
 
         modelBuilder.Entity<StockEntry>(entity =>
         {
-            entity.HasKey(e => e.EntryId).HasName("PK__StockEnt__F57BD2D76499FC3C");
+            entity.HasKey(e => e.EntryId).HasName("PK__StockEnt__F57BD2D755206114");
 
             entity.Property(e => e.EntryId).HasColumnName("EntryID");
             entity.Property(e => e.EntryDate)
@@ -146,20 +148,20 @@ public partial class PcshopDbContext : DbContext
 
             entity.HasOne(d => d.Supplier).WithMany(p => p.StockEntries)
                 .HasForeignKey(d => d.SupplierId)
-                .HasConstraintName("FK__StockEntr__Suppl__628FA481");
+                .HasConstraintName("FK__StockEntr__Suppl__6383C8BA");
 
             entity.HasOne(d => d.User).WithMany(p => p.StockEntries)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__StockEntr__UserI__6383C8BA");
+                .HasConstraintName("FK__StockEntr__UserI__6477ECF3");
 
             entity.HasOne(d => d.Warehouse).WithMany(p => p.StockEntries)
                 .HasForeignKey(d => d.WarehouseId)
-                .HasConstraintName("FK__StockEntr__Wareh__6477ECF3");
+                .HasConstraintName("FK__StockEntr__Wareh__656C112C");
         });
 
         modelBuilder.Entity<StockEntryDetail>(entity =>
         {
-            entity.HasKey(e => e.DetailId).HasName("PK__StockEnt__135C314D531BF1EB");
+            entity.HasKey(e => e.DetailId).HasName("PK__StockEnt__135C314D2008F3F6");
 
             entity.Property(e => e.DetailId).HasColumnName("DetailID");
             entity.Property(e => e.EntryId).HasColumnName("EntryID");
@@ -171,16 +173,16 @@ public partial class PcshopDbContext : DbContext
 
             entity.HasOne(d => d.Entry).WithMany(p => p.StockEntryDetails)
                 .HasForeignKey(d => d.EntryId)
-                .HasConstraintName("FK__StockEntr__Entry__6754599E");
+                .HasConstraintName("FK__StockEntr__Entry__68487DD7");
 
             entity.HasOne(d => d.Product).WithMany(p => p.StockEntryDetails)
                 .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__StockEntr__Produ__68487DD7");
+                .HasConstraintName("FK__StockEntr__Produ__693CA210");
         });
 
         modelBuilder.Entity<StockMovement>(entity =>
         {
-            entity.HasKey(e => e.MovementId).HasName("PK__StockMov__D18224665E8405A8");
+            entity.HasKey(e => e.MovementId).HasName("PK__StockMov__D1822466D6FB3D13");
 
             entity.Property(e => e.MovementId).HasColumnName("MovementID");
             entity.Property(e => e.Date)
@@ -193,16 +195,16 @@ public partial class PcshopDbContext : DbContext
 
             entity.HasOne(d => d.Product).WithMany(p => p.StockMovements)
                 .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__StockMove__Produ__71D1E811");
+                .HasConstraintName("FK__StockMove__Produ__72C60C4A");
 
             entity.HasOne(d => d.Warehouse).WithMany(p => p.StockMovements)
                 .HasForeignKey(d => d.WarehouseId)
-                .HasConstraintName("FK__StockMove__Wareh__72C60C4A");
+                .HasConstraintName("FK__StockMove__Wareh__73BA3083");
         });
 
         modelBuilder.Entity<Supplier>(entity =>
         {
-            entity.HasKey(e => e.SupplierId).HasName("PK__Supplier__4BE6669479FF3E6A");
+            entity.HasKey(e => e.SupplierId).HasName("PK__Supplier__4BE66694AC6891A7");
 
             entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
             entity.Property(e => e.Address).HasMaxLength(255);
@@ -213,12 +215,13 @@ public partial class PcshopDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CCAC2C8A47DF");
+            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CCACFD0DB79F");
 
-            entity.HasIndex(e => e.Username, "UQ__Users__536C85E4CDF6FC1B").IsUnique();
+            entity.HasIndex(e => e.Username, "UQ__Users__536C85E4913969B6").IsUnique();
 
             entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.FullName).HasMaxLength(100);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.Password).HasMaxLength(255);
             entity.Property(e => e.Role).HasDefaultValue(1);
             entity.Property(e => e.Username).HasMaxLength(50);
@@ -226,7 +229,7 @@ public partial class PcshopDbContext : DbContext
 
         modelBuilder.Entity<Warehouse>(entity =>
         {
-            entity.HasKey(e => e.WarehouseId).HasName("PK__Warehous__2608AFD9E4E3BDF2");
+            entity.HasKey(e => e.WarehouseId).HasName("PK__Warehous__2608AFD9DE7DB412");
 
             entity.Property(e => e.WarehouseId).HasColumnName("WarehouseID");
             entity.Property(e => e.Location).HasMaxLength(255);
