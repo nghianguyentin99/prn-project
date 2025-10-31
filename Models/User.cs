@@ -15,6 +15,8 @@ public partial class User
 
     public int Role { get; set; }
 
+    public bool IsActive { get; set; }
+
     public virtual ICollection<SalesOrder> SalesOrders { get; set; } = new List<SalesOrder>();
 
     public virtual ICollection<StockEntry> StockEntries { get; set; } = new List<StockEntry>();

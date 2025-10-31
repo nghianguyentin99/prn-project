@@ -269,3 +269,11 @@ D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Footer.g.cs
 D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Header.g.cs
 D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Footer.baml
 D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\UserManagementView.g.cs
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\UserManagementView.baml
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\CategoryManagementView.g.cs
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\CategoryManagementView.baml
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\SupplierManagementView.g.cs
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\SupplierManagementView.baml
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\ProductManagementView.g.cs
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\ProductManagementView.baml
