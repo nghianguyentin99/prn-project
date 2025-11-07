@@ -17,6 +17,12 @@ public partial class SalesOrder
 
     public DateTime? SaleDate { get; set; }
 
+    public int Status { get; set; }
+
+    public int? ApprovedByUserId { get; set; }
+
+    public DateTime? ApprovedDate { get; set; }
+
     public virtual Product? Product { get; set; }
 
     public virtual User? User { get; set; }

@@ -19,7 +19,11 @@ public partial class StockMovement
 
     public int? RelatedId { get; set; }
 
+    public int? UserId { get; set; }
+
     public virtual Product? Product { get; set; }
+
+    public virtual User? User { get; set; }
 
     public virtual Warehouse? Warehouse { get; set; }
 }

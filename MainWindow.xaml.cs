@@ -80,7 +80,7 @@ namespace PCShop
                     MainContent.Content = new ProductManagementView(); // Quản lí sản phẩm
                     break;
                 case "btnStockEntry":
-                    MainContent.Content = new TextBlock { Text = "Chức năng Quản lý Nhập kho", FontSize = 20, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
+                    MainContent.Content = new StockEntryView(_currentUser);
                     break;
                 case "btnStockExport":
                     MainContent.Content = new TextBlock { Text = "Chức năng Quản lý Xuất kho", FontSize = 20, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };

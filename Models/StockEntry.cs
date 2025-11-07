@@ -19,6 +19,12 @@ public partial class StockEntry
 
     public string? Note { get; set; }
 
+    public int Status { get; set; }
+
+    public int? ApprovedByUserId { get; set; }
+
+    public DateTime? ApprovedDate { get; set; }
+
     public virtual ICollection<StockEntryDetail> StockEntryDetails { get; set; } = new List<StockEntryDetail>();
 
     public virtual Supplier? Supplier { get; set; }

@@ -20,4 +20,6 @@ public partial class User
     public virtual ICollection<SalesOrder> SalesOrders { get; set; } = new List<SalesOrder>();
 
     public virtual ICollection<StockEntry> StockEntries { get; set; } = new List<StockEntry>();
+
+    public virtual ICollection<StockMovement> StockMovements { get; set; } = new List<StockMovement>();
 }

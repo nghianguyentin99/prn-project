@@ -5,6 +5,9 @@
     <Compile Update="View\Admin\CategoryManagementView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\Admin\StockEntryView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\Admin\SupplierManagementView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
