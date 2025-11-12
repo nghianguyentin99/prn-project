@@ -66,7 +66,7 @@ namespace PCShop.Repository
             {
                 // Kiểm tra xem sản phẩm đã có trong phiếu nhập/xuất chi tiết chưa
                 bool isInUse = context.StockEntryDetails.Any(d => d.ProductId == id) ||
-                               context.SalesOrders.Any(d => d.ProductId == id);
+                               context.SalesOrderDetails.Any(d => d.ProductId == id);
 
                 if (isInUse)
                 {

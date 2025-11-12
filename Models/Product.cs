@@ -29,7 +29,7 @@ public partial class Product
 
     public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
 
-    public virtual ICollection<SalesOrder> SalesOrders { get; set; } = new List<SalesOrder>();
+    public virtual ICollection<SalesOrderDetail> SalesOrderDetails { get; set; } = new List<SalesOrderDetail>();
 
     public virtual ICollection<StockEntryDetail> StockEntryDetails { get; set; } = new List<StockEntryDetail>();
 

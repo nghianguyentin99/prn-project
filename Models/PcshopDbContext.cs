@@ -23,6 +23,8 @@ public partial class PcshopDbContext : DbContext
 
     public virtual DbSet<SalesOrder> SalesOrders { get; set; }
 
+    public virtual DbSet<SalesOrderDetail> SalesOrderDetails { get; set; }
+
     public virtual DbSet<StockEntry> StockEntries { get; set; }
 
     public virtual DbSet<StockEntryDetail> StockEntryDetails { get; set; }
@@ -37,7 +39,7 @@ public partial class PcshopDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-31MGRHD5;Initial Catalog=PCShopDB; Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-31MGRHD5;Database=PCShopDB;User Id=sa;Password=nghia2005;TrustServerCertificate=true;Trusted_Connection=SSPI;Encrypt=false;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -106,25 +108,42 @@ public partial class PcshopDbContext : DbContext
 
         modelBuilder.Entity<SalesOrder>(entity =>
         {
-            entity.HasKey(e => e.SalesId).HasName("PK__SalesOrd__C952FB1278E5BFF9");
+            entity.HasKey(e => e.SalesId).HasName("PK__SalesOrd__C952FB121FE423B3");
 
             entity.Property(e => e.SalesId).HasColumnName("SalesID");
             entity.Property(e => e.ApprovedByUserId).HasColumnName("ApprovedByUserID");
             entity.Property(e => e.ApprovedDate).HasColumnType("datetime");
-            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.CustomerName).HasMaxLength(100);
+            entity.Property(e => e.Note).HasMaxLength(255);
             entity.Property(e => e.SaleDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.TotalAmount)
+                .HasDefaultValue(0m)
+                .HasColumnType("decimal(18, 2)");
             entity.Property(e => e.UserId).HasColumnName("UserID");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.SalesOrders)
-                .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__SalesOrde__Produ__6EF57B66");
 
             entity.HasOne(d => d.User).WithMany(p => p.SalesOrders)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__SalesOrde__UserI__6E01572D");
+                .HasConstraintName("FK__SalesOrde__UserI__18EBB532");
+        });
+
+        modelBuilder.Entity<SalesOrderDetail>(entity =>
+        {
+            entity.HasKey(e => e.SalesOrderDetailId).HasName("PK__SalesOrd__6B9B5125F63B046A");
+
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.SalesId).HasColumnName("SalesID");
+            entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.SalesOrderDetails)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK__SalesOrde__Produ__1CBC4616");
+
+            entity.HasOne(d => d.Sales).WithMany(p => p.SalesOrderDetails)
+                .HasForeignKey(d => d.SalesId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__SalesOrde__Sales__1BC821DD");
         });
 
         modelBuilder.Entity<StockEntry>(entity =>

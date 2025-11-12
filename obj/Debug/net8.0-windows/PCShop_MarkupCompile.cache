@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 D:\PRN212\PCShop\PCShop\App.xaml
-9-1348120781
+11-2074403087
 
-18102139149
+331100509031
 233-1099242344
-MainWindow.xaml;View\Admin\CategoryManagementView.xaml;View\Admin\StockEntryView.xaml;View\Admin\SupplierManagementView.xaml;View\Admin\UserManagementView.xaml;View\Footer.xaml;View\Header.xaml;View\Login.xaml;View\ProductManagementView.xaml;
+MainWindow.xaml;View\Admin\ApprovalView.xaml;View\Admin\CategoryManagementView.xaml;View\Admin\StockEntryView.xaml;View\Admin\SupplierManagementView.xaml;View\Admin\UserManagementView.xaml;View\Footer.xaml;View\Header.xaml;View\Login.xaml;View\ProductManagementView.xaml;View\Staff\StockExportView.xaml;
 
-True
+False
 

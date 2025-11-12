@@ -75,12 +75,21 @@ namespace PCShop.View
         // 2. Xử lý nút "Thêm vào phiếu"
         private void btnAddProductToList_Click(object sender, RoutedEventArgs e)
         {
-            // Validations
+            // === VALIDATION (Kiểm tra dữ liệu) ===
             if (cmbMasterProductList.SelectedItem == null)
             {
                 MessageBox.Show("Vui lòng chọn một sản phẩm.");
                 return;
             }
+
+            // Đảm bảo selectedProduct là một đối tượng Product hợp lệ
+            var selectedProduct = cmbMasterProductList.SelectedItem as Product;
+            if (selectedProduct == null)
+            {
+                MessageBox.Show("Sản phẩm được chọn không hợp lệ.");
+                return;
+            }
+
             if (!int.TryParse(txtQuantity.Text, out int quantity) || quantity <= 0)
             {
                 MessageBox.Show("Số lượng phải là số nguyên dương.");
@@ -92,42 +101,60 @@ namespace PCShop.View
                 return;
             }
 
-            var selectedProduct = (Product)cmbMasterProductList.SelectedItem;
-
-            // Kiểm tra xem sản phẩm đã có trong danh sách chưa
-            var existingItem = _currentEntryDetails.FirstOrDefault(item => item.ProductId == selectedProduct.ProductId);
-
-            if (existingItem != null)
+            // === XỬ LÝ LOGIC ===
+            try
             {
-                // Nếu đã có -> Cập nhật (hỏi người dùng)
-                if (MessageBox.Show("Sản phẩm này đã có trong phiếu. Bạn muốn cập nhật số lượng và đơn giá không?",
-                                    "Xác nhận cập nhật", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                // Kiểm tra xem sản phẩm đã có trong danh sách chưa
+                // Dùng .Where để lọc null trước khi tìm (an toàn)
+                var existingItem = _currentEntryDetails
+                                    .Where(item => item != null)
+                                    .FirstOrDefault(item => item.ProductId == selectedProduct.ProductId);
+
+                if (existingItem != null)
                 {
-                    existingItem.Quantity = quantity;
-                    existingItem.UnitPrice = unitPrice;
-                    // Cập nhật lại DataGrid
-                    dgProductsToAdd.Items.Refresh();
+                    // Nếu đã có -> Cập nhật (hỏi người dùng)
+                    if (MessageBox.Show("Sản phẩm này đã có trong phiếu. Bạn muốn cập nhật số lượng và đơn giá không?",
+                                        "Xác nhận cập nhật", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        existingItem.Quantity = quantity;
+                        existingItem.UnitPrice = unitPrice;
+                        // Cập nhật lại DataGrid
+                        dgProductsToAdd.Items.Refresh();
+                    }
                 }
-            }
-            else
-            {
-                // Nếu chưa có -> Thêm mới
-                var newItem = new StockEntryDetailViewModel
+                else
                 {
-                    ProductId = selectedProduct.ProductId,
-                    ProductName = selectedProduct.Name,
-                    Quantity = quantity,
-                    UnitPrice = unitPrice
-                };
-                _currentEntryDetails.Add(newItem);
+                    // Nếu chưa có -> Thêm mới
+                    var newItem = new StockEntryDetailViewModel
+                    {
+                        ProductId = selectedProduct.ProductId,
+                        ProductName = selectedProduct.Name, // Đảm bảo Name không null
+                        Quantity = quantity,
+                        UnitPrice = unitPrice
+                    };
+
+                    // *** SỬA LỖI GỐC ***
+                    // Chỉ thêm vào danh sách nếu newItem KHÔNG BỊ NULL
+                    if (newItem != null)
+                    {
+                        _currentEntryDetails.Add(newItem);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không thể tạo chi tiết sản phẩm mới.");
+                    }
+                }
+
+                // Xóa các ô input
+                cmbMasterProductList.SelectedIndex = -1;
+                txtQuantity.Clear();
+                txtUnitPrice.Clear();
             }
-
-            // Xóa các ô input
-            cmbMasterProductList.SelectedIndex = -1;
-            txtQuantity.Clear();
-            txtUnitPrice.Clear();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi thêm sản phẩm: {ex.Message}");
+            }
         }
-
         // 3. Xử lý nút "Xóa" trong DataGrid (Tùy chọn)
         private void btnRemoveItem_Click(object sender, RoutedEventArgs e)
         {
@@ -142,9 +169,17 @@ namespace PCShop.View
         }
 
         // 4. Xử lý nút "Lưu Phiếu Nhập" (Nghiệp vụ chính)
+        // 4. Xử lý nút "Lưu Phiếu Nhập" (Nghiệp vụ chính)
         private void btnSaveEntry_Click(object sender, RoutedEventArgs e)
         {
-            // Validations
+            // === BẪY LỖI NULL MỚI ===
+            if (_currentUser == null)
+            {
+                MessageBox.Show("LỖI NGHIÊM TRỌNG: Không tìm thấy thông tin người dùng (_currentUser). Vui lòng đăng nhập lại.", "Lỗi Session");
+                return;
+            }
+
+            // === Validations cũ của bạn (vẫn giữ nguyên) ===
             if (cmbSupplier.SelectedItem == null)
             {
                 MessageBox.Show("Vui lòng chọn nhà cung cấp.");
@@ -155,13 +190,20 @@ namespace PCShop.View
                 MessageBox.Show("Vui lòng chọn kho nhập.");
                 return;
             }
-            if (_currentEntryDetails.Count == 0)
+
+            // === SỬA LỖI LỌC NULL (RẤT QUAN TRỌNG) ===
+            // 1. Lọc bỏ bất kỳ item NULL nào có thể có trong danh sách
+            var validDetails = _currentEntryDetails.Where(item => item != null).ToList();
+
+            if (validDetails.Count == 0)
             {
-                MessageBox.Show("Phiếu nhập phải có ít nhất 1 sản phẩm.");
+                MessageBox.Show("Phiếu nhập phải có ít nhất 1 sản phẩm hợp lệ.");
                 return;
             }
+            // (Kết thúc sửa lỗi lọc null)
 
-            if (MessageBox.Show("Bạn có chắc chắn muốn lưu phiếu nhập này?", "Xác nhận lưu",
+
+            if (MessageBox.Show("Bạn có chắc chắn muốn gửi yêu cầu nhập phiếu này?", "Xác nhận gửi",
                                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
             {
                 return;
@@ -169,33 +211,42 @@ namespace PCShop.View
 
             try
             {
+                // === SỬA LỖI: Lấy ID từ SelectedItem thay vì SelectedValue ===
+                var selectedSupplier = cmbSupplier.SelectedItem as Supplier;
+                var selectedWarehouse = cmbWarehouse.SelectedItem as Warehouse;
+
+                if (selectedSupplier == null || selectedWarehouse == null)
+                {
+                    MessageBox.Show("Không thể lấy thông tin nhà cung cấp hoặc kho. Vui lòng chọn lại.", "Lỗi dữ liệu");
+                    return;
+                }
+
                 // Bước 1: Tạo đối tượng Header (Phiếu nhập)
                 var entryHeader = new StockEntry
                 {
-                    SupplierId = (int)cmbSupplier.SelectedValue,
-                    WarehouseId = (int)cmbWarehouse.SelectedValue,
-                    UserId = _currentUser.UserId, // Lấy từ user đăng nhập
+                    SupplierId = selectedSupplier.SupplierId,
+                    WarehouseId = selectedWarehouse.WarehouseId,
+                    UserId = _currentUser.UserId,
                     EntryDate = DateTime.Now,
                     Note = txtNote.Text,
-                    // Tính tổng tiền cho phiếu (nếu CSDL của bạn có)
-                    TotalAmount = _currentEntryDetails.Sum(d => d.TotalPrice)
+                    TotalAmount = validDetails.Sum(d => d.TotalPrice)
                 };
 
                 // Bước 2: Chuyển đổi danh sách ViewModel thành Model
-                List<StockEntryDetail> entryDetails = _currentEntryDetails.Select(vm => vm.ToModel()).ToList();
+                List<StockEntryDetail> entryDetails = validDetails.Select(vm => vm.ToModel()).ToList();
 
                 // Bước 3: Gọi Repository (đã bao gồm Transaction)
-                _stockEntryRepo.CreateStockEntry(entryHeader, entryDetails);
+                _stockEntryRepo.RequestStockEntry(entryHeader, entryDetails);
 
-                MessageBox.Show("Lưu phiếu nhập kho thành công!", "Thành công",
-                                MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Gửi yêu cầu nhập kho thành công! Chờ Admin phê duyệt.",
+                                "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 // Xóa form để chuẩn bị cho phiếu mới
                 ClearForm();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lưu phiếu thất bại: {ex.Message}", "Lỗi",
+                MessageBox.Show($"Gửi yêu cầu thất bại: {ex.Message}", "Lỗi",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
