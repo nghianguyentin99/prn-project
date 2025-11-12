@@ -44,9 +44,9 @@ namespace PCShop
         private void SetupRoleBasedAccess()
         {
             // ...
-            if (_currentUser.Role == 1) // NẾU LÀ STAFF
+            if (_currentUser.Role == 1) 
             {
-                // Ẩn các nút của Admin
+                
                 AdminTitle.Visibility = Visibility.Collapsed;
                 AdminSeparator.Visibility = Visibility.Collapsed;
                 btnApproval.Visibility = Visibility.Collapsed;
@@ -55,12 +55,11 @@ namespace PCShop
                 btnSupplierManagement.Visibility = Visibility.Collapsed;
                 btnReport.Visibility = Visibility.Collapsed;
 
-                // === THÊM DÒNG NÀY VÀO ===
                 btnInventory.Visibility = Visibility.Collapsed; // Staff không được Điều chỉnh
             }
-            else // NẾU LÀ ADMIN
+            else 
             {
-                // Ẩn các nút của Staff
+                
                 OperationsTitle.Visibility = Visibility.Collapsed;
                 btnProductManagement.Visibility = Visibility.Collapsed; // (Admin không quản lý sản phẩm?)
                 btnStockEntry.Visibility = Visibility.Collapsed;

@@ -6,12 +6,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using PCShop.View; // <== THÊM USING NÀY (để tái sử dụng ViewModel)
+using PCShop.View; 
 
 namespace PCShop.View.Staff
 {
-    // Chúng ta TÁI SỬ DỤNG ViewModel nội bộ của StockEntryView
-    // vì nó 'public' và có cấu trúc y hệt
+   
     using StockEntryDetailViewModel = PCShop.View.StockEntryView.StockEntryDetailViewModel;
 
     public partial class StockExportView : UserControl
