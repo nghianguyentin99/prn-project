@@ -9,15 +9,21 @@ public partial class SalesOrder
 
     public int? UserId { get; set; }
 
-    public int? ProductId { get; set; }
-
-    public int? Quantity { get; set; }
-
-    public decimal? UnitPrice { get; set; }
-
     public DateTime? SaleDate { get; set; }
 
-    public virtual Product? Product { get; set; }
+    public decimal? TotalAmount { get; set; }
+
+    public string? CustomerName { get; set; }
+
+    public string? Note { get; set; }
+
+    public int Status { get; set; }
+
+    public int? ApprovedByUserId { get; set; }
+
+    public DateTime? ApprovedDate { get; set; }
+
+    public virtual ICollection<SalesOrderDetail> SalesOrderDetails { get; set; } = new List<SalesOrderDetail>();
 
     public virtual User? User { get; set; }
 }

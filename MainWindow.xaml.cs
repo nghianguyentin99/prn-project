@@ -1,6 +1,7 @@
 ﻿using PCShop.Models;
 using PCShop.View;
 using PCShop.View.Admin; // Thêm namespace cho View Admin
+using PCShop.View.Staff;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,24 +43,29 @@ namespace PCShop
 
         private void SetupRoleBasedAccess()
         {
-            // Cập nhật Title
-            Title = $"PCShop - Xin chào, {_currentUser.FullName} ({(_currentUser.Role == 0 ? "Admin" : "Staff")})";
-
-            // Role 1 là Staff
-            if (_currentUser.Role == 1)
+            // ...
+            if (_currentUser.Role == 1) // NẾU LÀ STAFF
             {
                 // Ẩn các nút của Admin
+                AdminTitle.Visibility = Visibility.Collapsed;
+                AdminSeparator.Visibility = Visibility.Collapsed;
+                btnApproval.Visibility = Visibility.Collapsed;
                 btnUserManagement.Visibility = Visibility.Collapsed;
                 btnCategoryManagement.Visibility = Visibility.Collapsed;
-                btnReport.Visibility = Visibility.Collapsed;
                 btnSupplierManagement.Visibility = Visibility.Collapsed;
-                // Ẩn luôn cả dải phân cách và tiêu đề Admin
-                AdminSeparator.Visibility = Visibility.Collapsed;
-                AdminTitle.Visibility = Visibility.Collapsed;
+                btnReport.Visibility = Visibility.Collapsed;
 
-                // (Các nghiệp vụ hạn chế khác của Staff sẽ được xử lý bên trong từng View)
+                // === THÊM DÒNG NÀY VÀO ===
+                btnInventory.Visibility = Visibility.Collapsed; // Staff không được Điều chỉnh
             }
-            // Role 0 (Admin) sẽ thấy tất cả (mặc định)
+            else // NẾU LÀ ADMIN
+            {
+                // Ẩn các nút của Staff
+                OperationsTitle.Visibility = Visibility.Collapsed;
+                btnProductManagement.Visibility = Visibility.Collapsed; // (Admin không quản lý sản phẩm?)
+                btnStockEntry.Visibility = Visibility.Collapsed;
+                btnStockExport.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void NavButton_Click(object sender, RoutedEventArgs e)
@@ -80,10 +86,10 @@ namespace PCShop
                     MainContent.Content = new ProductManagementView(); // Quản lí sản phẩm
                     break;
                 case "btnStockEntry":
-                    MainContent.Content = new TextBlock { Text = "Chức năng Quản lý Nhập kho", FontSize = 20, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
+                    MainContent.Content = new StockEntryView(_currentUser);
                     break;
-                case "btnStockExport":
-                    MainContent.Content = new TextBlock { Text = "Chức năng Quản lý Xuất kho", FontSize = 20, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
+                case "btnStockExport": // <-- SỬA LẠI DÒNG NÀY
+                    MainContent.Content = new StockExportView(_currentUser); // Tải View Xuất kho
                     break;
                 case "btnInventory":
                     MainContent.Content = new TextBlock { Text = "Chức năng Quản lý Tồn kho", FontSize = 20, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
@@ -92,6 +98,9 @@ namespace PCShop
                 // --- Admin Functions ---
                 case "btnUserManagement":
                     MainContent.Content = new UserManagementView(); // Tải View Quản lý User
+                    break;
+                case "btnApproval": // <-- SỬA LẠI DÒNG NÀY
+                    MainContent.Content = new ApprovalView(_currentUser); // Tải View Phê duyệt
                     break;
                 case "btnCategoryManagement":
                     MainContent.Content = new CategoryManagementView(); // Quản lí category

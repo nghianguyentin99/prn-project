@@ -49,7 +49,7 @@
 
                 <Button x:Name="btnDashboard" Content="Tổng quan" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
 
-                <TextBlock Text="NGHIỆP VỤ" Foreground="#95A5A6" FontSize="11" FontWeight="Bold" Margin="10,15,10,5"/>
+                <TextBlock x:Name="OperationsTitle" Text="NGHIỆP VỤ" Foreground="#95A5A6" FontSize="11" FontWeight="Bold" Margin="10,15,10,5"/>
                 <Button x:Name="btnProductManagement" Content="Quản lý Sản phẩm" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
                 <Button x:Name="btnStockEntry" Content="Quản lý Nhập kho" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
                 <Button x:Name="btnStockExport" Content="Quản lý Xuất kho" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
@@ -58,6 +58,7 @@
                 <Separator x:Name="AdminSeparator" Margin="0,15" Background="#7F8C8D"/>
                 <TextBlock x:Name="AdminTitle" Text="QUẢN TRỊ HỆ THỐNG" Foreground="#95A5A6" FontSize="11" FontWeight="Bold" Margin="10,0,10,5"/>
                 <Button x:Name="btnUserManagement" Content="Quản lý Người dùng" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
+                <Button x:Name="btnApproval" Content="Phê duyệt Yêu cầu" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
                 <Button x:Name="btnCategoryManagement" Content="Quản lý Danh mục" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
                 <Button x:Name="btnSupplierManagement" Content="Quản lý Nhà Cung Cấp" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
                 <Button x:Name="btnReport" Content="Báo cáo - Thống kê" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
