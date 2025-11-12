@@ -22,10 +22,9 @@ namespace PCShop.Repository
                 .FirstOrDefault(u =>
                     u.Username == username
                     && u.Password == password
-                    && u.IsActive == true);   // Chỉ đăng nhập nếu còn hoạt động
+                    && u.IsActive == true);   
         }
 
-        // ---------- CÁC HÀM MỚI ĐƯỢC THÊM ----------
 
         /// <summary>
         /// Lấy tất cả người dùng
