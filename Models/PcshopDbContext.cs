@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 
 namespace PCShop.Models;
 
@@ -16,8 +17,6 @@ public partial class PcshopDbContext : DbContext
     }
 
     public virtual DbSet<Category> Categories { get; set; }
-
-    public virtual DbSet<Inventory> Inventories { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -38,8 +37,14 @@ public partial class PcshopDbContext : DbContext
     public virtual DbSet<Warehouse> Warehouses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-31MGRHD5;Database=PCShopDB;User Id=sa;Password=nghia2005;TrustServerCertificate=true;Trusted_Connection=SSPI;Encrypt=false;");
+    {
+        var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(config.GetConnectionString("MyCnn"));
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -52,32 +57,7 @@ public partial class PcshopDbContext : DbContext
             entity.Property(e => e.Description).HasMaxLength(255);
         });
 
-        modelBuilder.Entity<Inventory>(entity =>
-        {
-            entity.HasKey(e => e.InventoryId).HasName("PK__Inventor__F5FDE6D3001A7B65");
-
-            entity.ToTable("Inventory");
-
-            entity.Property(e => e.InventoryId).HasColumnName("InventoryID");
-            entity.Property(e => e.CurrentStock).HasComputedColumnSql("([QuantityIn]-[QuantityOut])", false);
-            entity.Property(e => e.LastUpdated)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.QuantityIn).HasDefaultValue(0);
-            entity.Property(e => e.QuantityOut).HasDefaultValue(0);
-            entity.Property(e => e.WarehouseId).HasColumnName("WarehouseID");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.Inventories)
-                .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Inventory__Produ__5FB337D6");
-
-            entity.HasOne(d => d.Warehouse).WithMany(p => p.Inventories)
-                .HasForeignKey(d => d.WarehouseId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Inventory__Wareh__60A75C0F");
-        });
+       
 
         modelBuilder.Entity<Product>(entity =>
         {
@@ -182,9 +162,7 @@ public partial class PcshopDbContext : DbContext
             entity.Property(e => e.DetailId).HasColumnName("DetailID");
             entity.Property(e => e.EntryId).HasColumnName("EntryID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.TotalPrice)
-                .HasComputedColumnSql("([Quantity]*[UnitPrice])", false)
-                .HasColumnType("decimal(29, 2)");
+           
             entity.Property(e => e.UnitPrice).HasColumnType("decimal(18, 2)");
 
             entity.HasOne(d => d.Entry).WithMany(p => p.StockEntryDetails)

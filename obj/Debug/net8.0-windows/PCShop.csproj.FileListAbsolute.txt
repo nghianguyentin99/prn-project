@@ -300,3 +300,16 @@ D:\PRN212\PCShop\PCShop\obj\Debug\net8.0-windows\PCShop.genruntimeconfig.cache
 D:\PRN212\PCShop\PCShop\obj\Debug\net8.0-windows\ref\PCShop.dll
 D:\PRN212\PCShop\PCShop\obj\Debug\net8.0-windows\View\Staff\StockExportView.g.cs
 D:\PRN212\PCShop\PCShop\obj\Debug\net8.0-windows\View\Staff\StockExportView.baml
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\ApprovalView.g.cs
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\StockEntryView.g.cs
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Staff\StockExportView.g.cs
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\ApprovalView.baml
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\StockEntryView.baml
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Staff\StockExportView.baml
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\DashboardView.baml
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\DashboardView.g.cs
+D:\PRN212\PC_SHOP\prn-project\bin\Debug\net8.0-windows\LiveCharts.dll
+D:\PRN212\PC_SHOP\prn-project\bin\Debug\net8.0-windows\LiveCharts.Geared.dll
+D:\PRN212\PC_SHOP\prn-project\bin\Debug\net8.0-windows\LiveCharts.Wpf.dll
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\ReportView.baml
+D:\PRN212\PC_SHOP\prn-project\obj\Debug\net8.0-windows\View\Admin\ReportView.g.cs

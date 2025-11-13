@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PRN212\\PCShop\\PCShop\\PCShop.csproj": {}
+    "D:\\PRN212\\PC_SHOP\\prn-project\\PCShop.csproj": {}
   },
   "projects": {
-    "D:\\PRN212\\PCShop\\PCShop\\PCShop.csproj": {
+    "D:\\PRN212\\PC_SHOP\\prn-project\\PCShop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PRN212\\PCShop\\PCShop\\PCShop.csproj",
+        "projectUniqueName": "D:\\PRN212\\PC_SHOP\\prn-project\\PCShop.csproj",
         "projectName": "PCShop",
-        "projectPath": "D:\\PRN212\\PCShop\\PCShop\\PCShop.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "D:\\PRN212\\PCShop\\PCShop\\obj\\",
+        "projectPath": "D:\\PRN212\\PC_SHOP\\prn-project\\PCShop.csproj",
+        "packagesPath": "C:\\Users\\SONHA\\.nuget\\packages\\",
+        "outputPath": "D:\\PRN212\\PC_SHOP\\prn-project\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\SONHA\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -50,6 +50,10 @@
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "dependencies": {
+            "LiveCharts.Geared": {
+              "target": "Package",
+              "version": "[1.2.9, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",

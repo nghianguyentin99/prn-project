@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="PCShop.View.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900"
+             Background="White" Loaded="UserControl_Loaded">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Tổng Quan Hệ Thống" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="#3498DB" Margin="0,0,10,0" CornerRadius="8" Padding="15">
+                <StackPanel>
+                    <TextBlock Text="TỔNG SẢN PHẨM" Foreground="White" Opacity="0.8"/>
+                    <TextBlock x:Name="txtTotalProducts" Text="0" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Background="#2ECC71" Margin="5,0,5,0" CornerRadius="8" Padding="15">
+                <StackPanel>
+                    <TextBlock Text="GIÁ TRỊ TỒN KHO" Foreground="White" Opacity="0.8"/>
+                    <TextBlock x:Name="txtTotalValue" Text="0 đ" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Background="#E67E22" Margin="5,0,5,0" CornerRadius="8" Padding="15">
+                <StackPanel>
+                    <TextBlock Text="SẮP HẾT HÀNG" Foreground="White" Opacity="0.8"/>
+                    <TextBlock x:Name="txtLowStock" Text="0" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Background="#E74C3C" Margin="10,0,0,0" CornerRadius="8" Padding="15">
+                <StackPanel>
+                    <TextBlock Text="CẦN DUYỆT NGAY" Foreground="White" Opacity="0.8"/>
+                    <TextBlock x:Name="txtPending" Text="0" Foreground="White" FontSize="28" FontWeight="Bold" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="0,20,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Top 5 Sản Phẩm Bán Chạy Nhất" FontSize="18" FontWeight="SemiBold" Foreground="#34495E" Margin="0,0,0,10"/>
+
+            <Border Grid.Row="1" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="5" Padding="10" Background="White">
+                <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="None">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Sản phẩm" Labels="{Binding ProductLabels}">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator Step="1" IsEnabled="False"></lvc:Separator>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Số lượng đã bán" MinValue="0"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

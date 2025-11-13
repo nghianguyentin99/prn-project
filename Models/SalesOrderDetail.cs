@@ -15,6 +15,8 @@ public partial class SalesOrderDetail
 
     public decimal? UnitPrice { get; set; }
 
+    public decimal TotalPrice => (Quantity ?? 0) * (UnitPrice ?? 0);
+
     public virtual Product? Product { get; set; }
 
     public virtual SalesOrder Sales { get; set; } = null!;

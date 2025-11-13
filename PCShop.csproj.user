@@ -8,6 +8,9 @@
     <Compile Update="View\Admin\CategoryManagementView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\Admin\ReportView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\Admin\StockEntryView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -15,6 +18,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\Admin\UserManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\DashboardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\Login.xaml.cs">

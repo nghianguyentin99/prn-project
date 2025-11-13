@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PCShop.View.Staff"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
              Background="White" Loaded="UserControl_Loaded">
@@ -15,109 +14,83 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="0" Header="Thông tin phiếu xuất" Padding="5" Margin="0,0,0,10">
+        <TextBlock Text="TẠO YÊU CẦU XUẤT KHO (BÁN HÀNG)" FontSize="20" FontWeight="Bold" Foreground="#2C3E50" Margin="0,0,0,10"/>
+
+        <Border Grid.Row="0" BorderBrush="#E67E22" BorderThickness="1" CornerRadius="5" Padding="10" Background="#FDEDEC" Margin="0,0,0,15">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" Grid.Column="0" Content="Tên khách hàng:" VerticalAlignment="Center" Margin="5"/>
-                <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtCustomerName" Margin="5" />
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="Tên Khách hàng " FontWeight="SemiBold"/>
+                    <TextBlock Text="(*)" Foreground="Red"/>
+                    <TextBlock Text=":" Margin="0,0,5,0"/>
+                </StackPanel>
+                <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtCustomerName" Height="30" VerticalContentAlignment="Center" Padding="5,0" BorderBrush="Gray"/>
 
-                <Label Grid.Row="1" Grid.Column="0" Content="Ghi chú:" VerticalAlignment="Top" Margin="5"/>
-                <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtNote" Margin="5"
-                         Height="40" TextWrapping="Wrap" AcceptsReturn="True" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Ghi chú:" VerticalAlignment="Top" Margin="0,5,5,0"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" x:Name="txtNote" Height="50" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="5"/>
             </Grid>
-        </GroupBox>
+        </Border>
 
-        <GroupBox Grid.Row="1" Header="Thêm sản phẩm" Padding="5" Margin="0,0,0,10">
+        <GroupBox Grid.Row="1" Header="Chọn sản phẩm xuất bán" Padding="5" Margin="0,0,0,10" BorderBrush="#95A5A6">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <ComboBox Grid.Column="0" x:Name="cmbMasterProductList" Margin="5"
-                          DisplayMemberPath="Name" 
-                          SelectedValuePath="ProductId"
-                          SelectionChanged="cmbMasterProductList_SelectionChanged"
-                          ToolTip="Chọn sản phẩm từ danh sách" />
+                <ComboBox Grid.Column="0" x:Name="cmbMasterProductList" Margin="5" DisplayMemberPath="Name" SelectedValuePath="ProductId" SelectionChanged="cmbMasterProductList_SelectionChanged" ToolTip="Chọn sản phẩm" Height="30" VerticalContentAlignment="Center"/>
 
-                <Grid Grid.Column="1" Margin="5,5,0,5" Width="100">
-                    <TextBox x:Name="txtUnitPrice" 
-                             ToolTip="Đơn giá (Tự động)" IsReadOnly="True" Background="#EEEEEE"
-                             VerticalContentAlignment="Center" Padding="4,0,0,0"/>
-                    <TextBlock Text="Tự động" Foreground="Gray" 
-                               IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=txtUnitPrice}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
+                <TextBox Grid.Column="1" x:Name="txtUnitPrice" Margin="5" IsReadOnly="True" Background="#EEEEEE" ToolTip="Đơn giá bán" Height="30" VerticalContentAlignment="Center" Padding="5,0"/>
 
-                <Grid Grid.Column="2" Margin="5,5,0,5" Width="80">
-                    <TextBox x:Name="txtQuantity" 
-                             ToolTip="Số lượng" VerticalContentAlignment="Center" Padding="4,0,0,0"/>
-                    <TextBlock Text="Số lượng" Foreground="Gray" 
-                               IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=txtQuantity}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
+                <TextBox Grid.Column="2" x:Name="txtQuantity" Margin="5" ToolTip="Số lượng" Height="30" VerticalContentAlignment="Center" Padding="5,0"/>
+                <TextBlock Grid.Column="2" Text="Số lượng" IsHitTestVisible="False" Foreground="Gray" Margin="12,0,0,0" VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=txtQuantity}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
-                <Button Grid.Column="3" x:Name="btnAddProductToList" Content="Thêm vào phiếu" 
-                        Margin="5" Padding="10,5" Click="btnAddProductToList_Click" />
+                <Button Grid.Column="3" x:Name="btnAddProductToList" Content="+ Thêm" Margin="5" Padding="15,5" Click="btnAddProductToList_Click" Background="#E67E22" Foreground="White" FontWeight="Bold"/>
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="2" Header="Chi tiết phiếu xuất" Padding="5">
-            <DataGrid x:Name="dgProductsToAdd" 
-                      AutoGenerateColumns="False" 
-                      CanUserAddRows="False"
-                      IsReadOnly="True">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID SP" Binding="{Binding ProductId}" Width="Auto" />
-                    <DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding ProductName}" Width="*" />
-                    <DataGridTextColumn Header="Số lượng" Binding="{Binding Quantity}" Width="Auto" />
-                    <DataGridTextColumn Header="Đơn giá" Binding="{Binding UnitPrice, StringFormat='N0'}" Width="Auto" />
-                    <DataGridTextColumn Header="Thành tiền" Binding="{Binding TotalPrice, StringFormat='N0'}" Width="Auto" />
-                    <DataGridTemplateColumn Header="Xóa">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button x:Name="btnRemoveItem" Content="Xóa" Click="btnRemoveItem_Click" Tag="{Binding ProductId}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </GroupBox>
+        <DataGrid Grid.Row="2" x:Name="dgProductsToAdd" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" BorderBrush="#BDC3C7" BorderThickness="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding ProductId}" Width="50" />
+                <DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding ProductName}" Width="*" />
+                <DataGridTextColumn Header="Số lượng" Binding="{Binding Quantity}" Width="80" />
+                <DataGridTextColumn Header="Đơn giá" Binding="{Binding UnitPrice, StringFormat='N0'}" Width="100" />
+                <DataGridTextColumn Header="Thành tiền" Binding="{Binding TotalPrice, StringFormat='N0'}" Width="100" FontWeight="Bold"/>
+                <DataGridTemplateColumn Header="Xóa" Width="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="X" Click="btnRemoveItem_Click" Tag="{Binding ProductId}" Background="#E74C3C" Foreground="White" FontWeight="Bold" Width="30"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
-        <Button Grid.Row="3" x:Name="btnSaveExport" Content="Gửi Yêu cầu Xuất kho" 
-                Margin="0,10,0,0" Padding="15,5" 
-                HorizontalAlignment="Right" 
-                FontWeight="Bold" 
-                Click="btnSaveExport_Click"/>
+        <Button Grid.Row="3" x:Name="btnSaveExport" Content="GỬI YÊU CẦU DUYỆT" Margin="0,10,0,0" Padding="15,10" HorizontalAlignment="Right" Background="#27AE60" Foreground="White" FontWeight="Bold" FontSize="14" Click="btnSaveExport_Click"/>
     </Grid>
 </UserControl>

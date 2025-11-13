@@ -53,7 +53,7 @@
                 <Button x:Name="btnProductManagement" Content="Quản lý Sản phẩm" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
                 <Button x:Name="btnStockEntry" Content="Quản lý Nhập kho" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
                 <Button x:Name="btnStockExport" Content="Quản lý Xuất kho" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
-                <Button x:Name="btnInventory" Content="Quản lý Tồn kho" Click="NavButton_Click" Style="{StaticResource NavButton}"/>
+                
 
                 <Separator x:Name="AdminSeparator" Margin="0,15" Background="#7F8C8D"/>
                 <TextBlock x:Name="AdminTitle" Text="QUẢN TRỊ HỆ THỐNG" Foreground="#95A5A6" FontSize="11" FontWeight="Bold" Margin="10,0,10,5"/>

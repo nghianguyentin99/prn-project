@@ -172,82 +172,66 @@ namespace PCShop.View
         // 4. Xử lý nút "Lưu Phiếu Nhập" (Nghiệp vụ chính)
         private void btnSaveEntry_Click(object sender, RoutedEventArgs e)
         {
-            // === BẪY LỖI NULL MỚI ===
             if (_currentUser == null)
             {
-                MessageBox.Show("LỖI NGHIÊM TRỌNG: Không tìm thấy thông tin người dùng (_currentUser). Vui lòng đăng nhập lại.", "Lỗi Session");
+                MessageBox.Show("Lỗi phiên làm việc. Vui lòng đăng nhập lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // === Validations cũ của bạn (vẫn giữ nguyên) ===
+            // --- KIỂM TRA BẮT BUỘC ---
             if (cmbSupplier.SelectedItem == null)
             {
-                MessageBox.Show("Vui lòng chọn nhà cung cấp.");
+                MessageBox.Show("Bạn chưa chọn [Nhà cung cấp].", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                cmbSupplier.Focus();
                 return;
             }
+
             if (cmbWarehouse.SelectedItem == null)
             {
-                MessageBox.Show("Vui lòng chọn kho nhập.");
+                MessageBox.Show("Bạn chưa chọn [Kho nhập].", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                cmbWarehouse.Focus();
                 return;
             }
 
-            // === SỬA LỖI LỌC NULL (RẤT QUAN TRỌNG) ===
-            // 1. Lọc bỏ bất kỳ item NULL nào có thể có trong danh sách
             var validDetails = _currentEntryDetails.Where(item => item != null).ToList();
-
             if (validDetails.Count == 0)
             {
-                MessageBox.Show("Phiếu nhập phải có ít nhất 1 sản phẩm hợp lệ.");
+                MessageBox.Show("Danh sách sản phẩm đang trống. Vui lòng thêm ít nhất 1 sản phẩm.", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                cmbMasterProductList.Focus();
                 return;
             }
-            // (Kết thúc sửa lỗi lọc null)
+            // --------------------------
 
-
-            if (MessageBox.Show("Bạn có chắc chắn muốn gửi yêu cầu nhập phiếu này?", "Xác nhận gửi",
-                                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            if (MessageBox.Show("Gửi yêu cầu nhập kho này cho Admin duyệt?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
             {
                 return;
             }
 
             try
             {
-                // === SỬA LỖI: Lấy ID từ SelectedItem thay vì SelectedValue ===
-                var selectedSupplier = cmbSupplier.SelectedItem as Supplier;
-                var selectedWarehouse = cmbWarehouse.SelectedItem as Warehouse;
+                var selectedSupplier = (Supplier)cmbSupplier.SelectedItem;
+                var selectedWarehouse = (Warehouse)cmbWarehouse.SelectedItem;
 
-                if (selectedSupplier == null || selectedWarehouse == null)
-                {
-                    MessageBox.Show("Không thể lấy thông tin nhà cung cấp hoặc kho. Vui lòng chọn lại.", "Lỗi dữ liệu");
-                    return;
-                }
-
-                // Bước 1: Tạo đối tượng Header (Phiếu nhập)
                 var entryHeader = new StockEntry
                 {
                     SupplierId = selectedSupplier.SupplierId,
                     WarehouseId = selectedWarehouse.WarehouseId,
                     UserId = _currentUser.UserId,
                     EntryDate = DateTime.Now,
-                    Note = txtNote.Text,
+                    Note = txtNote.Text?.Trim(),
                     TotalAmount = validDetails.Sum(d => d.TotalPrice)
                 };
 
-                // Bước 2: Chuyển đổi danh sách ViewModel thành Model
                 List<StockEntryDetail> entryDetails = validDetails.Select(vm => vm.ToModel()).ToList();
 
-                // Bước 3: Gọi Repository (đã bao gồm Transaction)
                 _stockEntryRepo.RequestStockEntry(entryHeader, entryDetails);
 
-                MessageBox.Show("Gửi yêu cầu nhập kho thành công! Chờ Admin phê duyệt.",
-                                "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                // Xóa form để chuẩn bị cho phiếu mới
+                MessageBox.Show("Đã gửi yêu cầu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 ClearForm();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Gửi yêu cầu thất bại: {ex.Message}", "Lỗi",
-                                MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Lỗi gửi yêu cầu: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
