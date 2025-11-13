@@ -15,7 +15,7 @@ public partial class StockEntryDetail
 
     public decimal? UnitPrice { get; set; }
 
-    public decimal? TotalPrice { get; set; }
+    public decimal TotalPrice => (Quantity ?? 0) * (UnitPrice ?? 0);
 
     public virtual StockEntry? Entry { get; set; }
 

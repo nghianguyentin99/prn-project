@@ -13,7 +13,7 @@ public partial class Warehouse
 
     public string? Manager { get; set; }
 
-    public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
+
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 

@@ -134,40 +134,45 @@ namespace PCShop.View.Staff
         // 5. Xử lý nút "Gửi Yêu cầu Xuất kho"
         private void btnSaveExport_Click(object sender, RoutedEventArgs e)
         {
-            // Kiểm tra User (Lỗi crash "ma")
             if (_currentUser == null)
             {
-                MessageBox.Show("LỖI NGHIÊM TRỌNG: Không tìm thấy thông tin người dùng (_currentUser). Vui lòng đăng nhập lại.", "Lỗi Session");
+                MessageBox.Show("Lỗi phiên làm việc. Vui lòng đăng nhập lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // Lọc các item null
+            // --- KIỂM TRA BẮT BUỘC ---
+            if (string.IsNullOrWhiteSpace(txtCustomerName.Text))
+            {
+                MessageBox.Show("Bạn chưa nhập [Tên khách hàng].", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                txtCustomerName.Focus();
+                return;
+            }
+
             var validDetails = _currentExportDetails.Where(item => item != null).ToList();
             if (validDetails.Count == 0)
             {
-                MessageBox.Show("Phiếu xuất phải có ít nhất 1 sản phẩm.");
+                MessageBox.Show("Phiếu xuất phải có ít nhất 1 sản phẩm.", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
+                cmbMasterProductList.Focus();
                 return;
             }
+            // --------------------------
 
-            if (MessageBox.Show("Bạn có chắc chắn muốn gửi YÊU CẦU XUẤT KHO này?", "Xác nhận gửi",
-                                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            if (MessageBox.Show("Gửi yêu cầu xuất kho này cho Admin duyệt?", "Xác nhận", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
             {
                 return;
             }
 
             try
             {
-                // Bước 1: Tạo đối tượng Header (Phiếu xuất)
                 var orderHeader = new SalesOrder
                 {
                     UserId = _currentUser.UserId,
                     SaleDate = DateTime.Now,
-                    CustomerName = txtCustomerName.Text, // Lấy tên khách hàng
-                    Note = txtNote.Text,
+                    CustomerName = txtCustomerName.Text.Trim(),
+                    Note = txtNote.Text?.Trim(),
                     TotalAmount = validDetails.Sum(d => d.TotalPrice)
                 };
 
-                // Bước 2: Chuyển đổi ViewModel thành Model SalesOrderDetail
                 List<SalesOrderDetail> orderDetails = validDetails.Select(vm => new SalesOrderDetail
                 {
                     ProductId = vm.ProductId,
@@ -175,15 +180,14 @@ namespace PCShop.View.Staff
                     UnitPrice = vm.UnitPrice
                 }).ToList();
 
-                // Bước 3: Gọi Repository (Hàm "Yêu cầu")
                 _salesOrderRepo.RequestSalesOrder(orderHeader, orderDetails);
 
-                MessageBox.Show("Gửi yêu cầu xuất kho thành công! Chờ Admin phê duyệt.", "Thành công");
+                MessageBox.Show("Đã gửi yêu cầu thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 ClearForm();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Gửi yêu cầu thất bại: {ex.Message}", "Lỗi");
+                MessageBox.Show($"Lỗi gửi yêu cầu: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

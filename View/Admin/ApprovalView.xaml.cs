@@ -1,7 +1,6 @@
 ﻿using PCShop.Models;
 using PCShop.Repository;
 using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,116 +9,161 @@ namespace PCShop.View.Admin
     public partial class ApprovalView : UserControl
     {
         private readonly StockEntryRepository _stockEntryRepo;
+        private readonly SalesOrderRepository _salesOrderRepo;
         private readonly User _currentUser;
-        private StockEntry _selectedEntry; // Lưu phiếu đang được chọn
+
+        private StockEntry _selectedImport;
+        private SalesOrder _selectedExport;
 
         public ApprovalView(User currentUser)
         {
             InitializeComponent();
             _currentUser = currentUser;
             _stockEntryRepo = new StockEntryRepository();
+            _salesOrderRepo = new SalesOrderRepository();
         }
 
-        // Tải danh sách các phiếu "Đang chờ" (Status = 0)
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadPendingRequests();
+            LoadImportRequests();
+            LoadExportRequests();
         }
 
-        private void LoadPendingRequests()
+        // --- LOGIC TAB NHẬP KHO ---
+        private void LoadImportRequests()
         {
             try
             {
-                // Dùng hàm GetPendingEntries() chúng ta đã tạo
-                dgPendingRequests.ItemsSource = _stockEntryRepo.GetPendingEntries();
+                dgImportRequests.ItemsSource = _stockEntryRepo.GetPendingEntries();
 
-                // Reset cột chi tiết
-                gbRequestDetails.IsEnabled = false;
-                dgRequestDetails.ItemsSource = null;
-                txtDetailEntryId.Text = "";
-                txtDetailNote.Text = "";
-                _selectedEntry = null;
+                // Reset trạng thái chi tiết
+                gbImportDetails.IsEnabled = false;
+                dgImportDetailsItems.ItemsSource = null;
+                _selectedImport = null;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi tải danh sách chờ: {ex.Message}");
+                MessageBox.Show("Lỗi tải phiếu nhập: " + ex.Message);
             }
         }
 
-        // Khi Admin nhấn vào 1 phiếu trong danh sách chờ
-        private void dgPendingRequests_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void dgImportRequests_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (dgPendingRequests.SelectedItem is StockEntry selectedEntry)
+            if (dgImportRequests.SelectedItem is StockEntry entry)
             {
-                _selectedEntry = selectedEntry; // Lưu lại
-                gbRequestDetails.IsEnabled = true; // Kích hoạt cột chi tiết
+                _selectedImport = entry;
+                gbImportDetails.IsEnabled = true; // Mở khóa khu vực chi tiết
 
-                // Hiển thị thông tin chung
-                txtDetailEntryId.Text = selectedEntry.EntryId.ToString();
-                txtDetailNote.Text = selectedEntry.Note;
+                // Tải chi tiết sản phẩm của phiếu này
+                dgImportDetailsItems.ItemsSource = _stockEntryRepo.GetDetailsForEntry(entry.EntryId);
+            }
+        }
 
-                // Tải danh sách sản phẩm của phiếu đó
+        private void btnApproveImport_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedImport == null) return;
+
+            if (MessageBox.Show("Xác nhận DUYỆT phiếu nhập này? Tồn kho sẽ tăng lên.", "Xác nhận Duyệt", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
                 try
                 {
-                    // Dùng hàm GetDetailsForEntry() mới thêm
-                    dgRequestDetails.ItemsSource = _stockEntryRepo.GetDetailsForEntry(selectedEntry.EntryId);
+                    _stockEntryRepo.ApproveStockEntry(_selectedImport.EntryId, _currentUser.UserId);
+                    MessageBox.Show("Đã duyệt phiếu nhập thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Tải lại danh sách (phiếu này sẽ biến mất khỏi danh sách chờ)
+                    LoadImportRequests();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Lỗi tải chi tiết phiếu: {ex.Message}");
+                    MessageBox.Show("Lỗi khi duyệt: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
-        // Nút "Phê duyệt"
-        private void btnApprove_Click(object sender, RoutedEventArgs e)
+        private void btnRejectImport_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedEntry == null) return;
+            if (_selectedImport == null) return;
 
-            if (MessageBox.Show($"Bạn có chắc chắn muốn PHÊ DUYỆT phiếu nhập số {_selectedEntry.EntryId}?",
-                                "Xác nhận Phê duyệt", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            if (MessageBox.Show("Xác nhận TỪ CHỐI phiếu nhập này?", "Xác nhận Từ chối", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                return;
-            }
-
-            try
-            {
-                // Gọi hàm nghiệp vụ CHÍNH (tăng tồn kho)
-                _stockEntryRepo.ApproveStockEntry(_selectedEntry.EntryId, _currentUser.UserId);
-                MessageBox.Show("Phê duyệt thành công! Tồn kho đã được cập nhật.", "Thành công");
-
-                // Tải lại danh sách (phiếu này sẽ biến mất)
-                LoadPendingRequests();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi khi phê duyệt: {ex.Message}");
+                try
+                {
+                    _stockEntryRepo.RejectStockEntry(_selectedImport.EntryId, _currentUser.UserId);
+                    MessageBox.Show("Đã từ chối phiếu nhập.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadImportRequests();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi từ chối: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
-        // Nút "Từ chối"
-        private void btnReject_Click(object sender, RoutedEventArgs e)
+        // --- LOGIC TAB XUẤT KHO ---
+        private void LoadExportRequests()
         {
-            if (_selectedEntry == null) return;
-
-            if (MessageBox.Show($"Bạn có chắc chắn muốn TỪ CHỐI phiếu nhập số {_selectedEntry.EntryId}?",
-                                "Xác nhận Từ chối", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
-            {
-                return;
-            }
-
             try
             {
-                // Gọi hàm nghiệp vụ "Từ chối" (chỉ set Status = 2)
-                _stockEntryRepo.RejectStockEntry(_selectedEntry.EntryId, _currentUser.UserId);
-                MessageBox.Show("Đã từ chối phiếu nhập.", "Thông báo");
+                dgExportRequests.ItemsSource = _salesOrderRepo.GetPendingSalesOrders();
 
-                // Tải lại danh sách (phiếu này sẽ biến mất)
-                LoadPendingRequests();
+                // Reset trạng thái chi tiết
+                gbExportDetails.IsEnabled = false;
+                dgExportDetailsItems.ItemsSource = null;
+                _selectedExport = null;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi từ chối: {ex.Message}");
+                MessageBox.Show("Lỗi tải phiếu xuất: " + ex.Message);
+            }
+        }
+
+        private void dgExportRequests_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dgExportRequests.SelectedItem is SalesOrder order)
+            {
+                _selectedExport = order;
+                gbExportDetails.IsEnabled = true;
+
+                // Tải chi tiết sản phẩm của phiếu xuất này
+                dgExportDetailsItems.ItemsSource = _salesOrderRepo.GetDetailsForSalesOrder(order.SalesId);
+            }
+        }
+
+        private void btnApproveExport_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedExport == null) return;
+
+            if (MessageBox.Show("Xác nhận DUYỆT phiếu xuất này? Tồn kho sẽ bị trừ.", "Xác nhận Duyệt", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    _salesOrderRepo.ApproveSalesOrder(_selectedExport.SalesId, _currentUser.UserId);
+                    MessageBox.Show("Đã duyệt phiếu xuất thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadExportRequests();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi duyệt: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void btnRejectExport_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedExport == null) return;
+
+            if (MessageBox.Show("Xác nhận TỪ CHỐI phiếu xuất này?", "Xác nhận Từ chối", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    _salesOrderRepo.RejectSalesOrder(_selectedExport.SalesId, _currentUser.UserId);
+                    MessageBox.Show("Đã từ chối phiếu xuất.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadExportRequests();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi từ chối: " + ex.Message, "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }

@@ -55,7 +55,7 @@ namespace PCShop
                 btnSupplierManagement.Visibility = Visibility.Collapsed;
                 btnReport.Visibility = Visibility.Collapsed;
 
-                btnInventory.Visibility = Visibility.Collapsed; // Staff không được Điều chỉnh
+                
             }
             else 
             {
@@ -79,7 +79,7 @@ namespace PCShop
             switch (clickedButton.Name)
             {
                 case "btnDashboard":
-                    MainContent.Content = new TextBlock { Text = "Trang Tổng quan (Dashboard)", FontSize = 20, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
+                    MainContent.Content = new DashboardView();
                     break;
                 case "btnProductManagement":
                     MainContent.Content = new ProductManagementView(); // Quản lí sản phẩm
@@ -90,9 +90,7 @@ namespace PCShop
                 case "btnStockExport": // <-- SỬA LẠI DÒNG NÀY
                     MainContent.Content = new StockExportView(_currentUser); // Tải View Xuất kho
                     break;
-                case "btnInventory":
-                    MainContent.Content = new TextBlock { Text = "Chức năng Quản lý Tồn kho", FontSize = 20, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
-                    break;
+                
 
                 // --- Admin Functions ---
                 case "btnUserManagement":
@@ -108,7 +106,7 @@ namespace PCShop
                     MainContent.Content = new SupplierManagementView(); //Quản lí nhà cung 
                     break;
                 case "btnReport":
-                    MainContent.Content = new TextBlock { Text = "Chức năng Báo cáo - Thống kê", FontSize = 20, VerticalAlignment = VerticalAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center };
+                    MainContent.Content = new ReportView();
                     break;
             }
         }

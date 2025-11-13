@@ -5,32 +5,116 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PCShop.View"
         mc:Ignorable="d"
-        Title="Hệ thống quản lý kho - PCShop"
+        Title="Đăng nhập - PCShop System"
+        Height="600" Width="900"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="SingleBorderWindow">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        FontFamily="Segoe UI"
+        
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True">
 
-        <TextBlock Text="ĐĂNG NHẬP" 
-                   FontSize="22" FontWeight="Bold"
-                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#BDC3C7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#F8F9F9"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <StackPanel Grid.Row="1" Margin="20">
-            <Label Content="Tên đăng nhập:"/>
-            <TextBox x:Name="txtUsername" Width="250" Height="30"/>
+        <Style TargetType="PasswordBox">
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#BDC3C7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#F8F9F9"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <Label Content="Mật khẩu:" Margin="0,10,0,0"/>
-            <PasswordBox x:Name="txtPassword" Width="250" Height="30"/>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#2980B9"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="5" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#3498DB"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#1F618D"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
-            <Button Content="Đăng nhập" Width="100" Height="35" 
-                    Margin="0,20,0,0"
-                    HorizontalAlignment="Center"
-                    Click="BtnLogin_Click"/>
-        </StackPanel>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#2C3E50" Offset="0.0"/>
+                <GradientStop Color="#34495E" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+
+            <Border Width="400" Height="520" Background="White" CornerRadius="15">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="10" Opacity="0.3" Direction="270" RenderingBias="Quality"/>
+                </Border.Effect>
+            </Border>
+
+            <Border Width="400" Height="520" Background="White" CornerRadius="15">
+                <StackPanel Margin="40,50,40,40">
+                    <Ellipse Width="60" Height="60" Fill="#3498DB" Margin="0,0,0,15"/>
+                    <TextBlock Text="PCSHOP" FontSize="28" FontWeight="ExtraBold" Foreground="#2C3E50" HorizontalAlignment="Center" 
+                               RenderOptions.ClearTypeHint="Enabled"/>
+
+                    <TextBlock Text="QUẢN LÝ KHO" FontSize="14" FontWeight="SemiBold" Foreground="#7F8C8D" HorizontalAlignment="Center" Margin="0,5,0,40"/>
+
+                    <TextBlock Text="Tên đăng nhập" Foreground="#7F8C8D" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                    <TextBox x:Name="txtUsername" Height="45" Margin="0,0,0,20"/>
+
+                    <TextBlock Text="Mật khẩu" Foreground="#7F8C8D" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                    <PasswordBox x:Name="txtPassword" Height="45" Margin="0,0,0,30"/>
+
+                    <Button Content="ĐĂNG NHẬP" Height="50" Click="BtnLogin_Click">
+                    </Button>
+
+                    <TextBlock Text="Phiên bản 1.0" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="11" Foreground="#BDC3C7"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

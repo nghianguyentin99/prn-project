@@ -3,70 +3,116 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PCShop.View.Admin"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="900"
              Background="White" Loaded="UserControl_Loaded">
+
     <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="5*" />
-        </Grid.ColumnDefinitions>
+        <TextBlock Text="PHÊ DUYỆT YÊU CẦU" FontSize="20" FontWeight="Bold" Margin="0,0,0,10" Foreground="#2C3E50"/>
 
-        <GroupBox Grid.Column="0" Header="Danh sách phiếu chờ duyệt" Padding="5" Margin="0,0,10,0">
-            <DataGrid x:Name="dgPendingRequests"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      SelectionMode="Single"
-                      SelectionChanged="dgPendingRequests_SelectionChanged">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding EntryId}" Width="Auto" />
-                    <DataGridTextColumn Header="Người tạo" Binding="{Binding User.FullName}" Width="*" />
-                    <DataGridTextColumn Header="NCC" Binding="{Binding Supplier.Name}" Width="Auto" />
-                    <DataGridTextColumn Header="Ngày tạo" Binding="{Binding EntryDate, StringFormat='dd/MM/yy HH:mm'}" Width="Auto" />
-                    <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalAmount, StringFormat='N0'}" Width="Auto" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </GroupBox>
+        <TabControl Margin="0,30,0,0" BorderThickness="0">
 
-        <GroupBox Grid.Column="1" Header="Chi tiết yêu cầu" x:Name="gbRequestDetails" IsEnabled="False">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            <TabItem Header="Duyệt Nhập Kho" FontSize="14" Padding="10,5">
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="5*" />
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Row="0" Margin="5">
-                    <WrapPanel>
-                        <TextBlock Text="Phiếu số: " FontWeight="Bold" />
-                        <TextBlock x:Name="txtDetailEntryId" />
-                    </WrapPanel>
-                    <WrapPanel>
-                        <TextBlock Text="Ghi chú (từ Staff): " FontWeight="Bold" />
-                        <TextBlock x:Name="txtDetailNote" TextWrapping="Wrap" />
-                    </WrapPanel>
-                </StackPanel>
+                    <GroupBox Grid.Column="0" Header="Danh sách Phiếu Nhập chờ duyệt" Padding="5" Margin="0,0,10,0">
+                        <DataGrid x:Name="dgImportRequests" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
+                                  SelectionChanged="dgImportRequests_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding EntryId}" Width="40" />
+                                <DataGridTextColumn Header="Người tạo" Binding="{Binding User.FullName}" Width="*" />
+                                <DataGridTextColumn Header="Ngày tạo" Binding="{Binding EntryDate, StringFormat='dd/MM HH:mm'}" Width="90" />
+                                <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalAmount, StringFormat='N0'}" Width="80" FontWeight="Bold"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
 
-                <DataGrid Grid.Row="1" x:Name="dgRequestDetails"
-                          AutoGenerateColumns="False" IsReadOnly="True" Margin="5"
-                          HeadersVisibility="Column">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Tên sản phẩm" Binding="{Binding Product.Name}" Width="*" />
-                        <DataGridTextColumn Header="Số lượng" Binding="{Binding Quantity}" Width="Auto" />
-                        <DataGridTextColumn Header="Đơn giá" Binding="{Binding UnitPrice, StringFormat='N0'}" Width="Auto" />
-                        <DataGridTextColumn Header="Thành tiền" Binding="{Binding TotalPrice, StringFormat='N0'}" Width="Auto" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                    <GroupBox Grid.Column="1" Header="Chi tiết Phiếu Nhập" x:Name="gbImportDetails" IsEnabled="False">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-                    <Button x:Name="btnReject" Content="Từ chối" Padding="20,5" Margin="0,0,10,0"
-                            Background="IndianRed" Foreground="White" Click="btnReject_Click" />
-                    <Button x:Name="btnApprove" Content="Phê duyệt" Padding="20,5"
-                            Background="SeaGreen" Foreground="White" FontWeight="Bold" Click="btnApprove_Click" />
-                </StackPanel>
-            </Grid>
-        </GroupBox>
+                            <StackPanel Grid.Row="0" Margin="5">
+                                <TextBlock Text="{Binding ElementName=dgImportRequests, Path=SelectedItem.Note, StringFormat='Ghi chú: {0}'}" 
+                                           FontStyle="Italic" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                                <TextBlock Text="{Binding ElementName=dgImportRequests, Path=SelectedItem.Supplier.Name, StringFormat='NCC: {0}'}" FontWeight="Bold"/>
+                            </StackPanel>
 
+                            <DataGrid Grid.Row="1" x:Name="dgImportDetailsItems" AutoGenerateColumns="False" IsReadOnly="True" Margin="5">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Sản phẩm" Binding="{Binding Product.Name}" Width="*" />
+                                    <DataGridTextColumn Header="SL" Binding="{Binding Quantity}" Width="50" />
+                                    <DataGridTextColumn Header="Đơn giá" Binding="{Binding UnitPrice, StringFormat='N0'}" Width="80" />
+                                    <DataGridTextColumn Header="Thành tiền" Binding="{Binding TotalPrice, StringFormat='N0'}" Width="80" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+                                <Button Content="Từ chối" Click="btnRejectImport_Click" Background="#C0392B" Foreground="White" Padding="15,5" Margin="0,0,10,0"/>
+                                <Button Content="Phê duyệt" Click="btnApproveImport_Click" Background="#27AE60" Foreground="White" Padding="15,5" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Duyệt Xuất Kho" FontSize="14" Padding="10,5">
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="5*" />
+                    </Grid.ColumnDefinitions>
+
+                    <GroupBox Grid.Column="0" Header="Danh sách Phiếu Xuất chờ duyệt" Padding="5" Margin="0,0,10,0">
+                        <DataGrid x:Name="dgExportRequests" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
+                                  SelectionChanged="dgExportRequests_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding SalesId}" Width="40" />
+                                <DataGridTextColumn Header="Người tạo" Binding="{Binding User.FullName}" Width="*" />
+                                <DataGridTextColumn Header="Ngày tạo" Binding="{Binding SaleDate, StringFormat='dd/MM HH:mm'}" Width="90" />
+                                <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalAmount, StringFormat='N0'}" Width="80" FontWeight="Bold"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+
+                    <GroupBox Grid.Column="1" Header="Chi tiết Phiếu Xuất" x:Name="gbExportDetails" IsEnabled="False">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Margin="5">
+                                <TextBlock Text="{Binding ElementName=dgExportRequests, Path=SelectedItem.Note, StringFormat='Ghi chú: {0}'}" 
+                                           FontStyle="Italic" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                                <TextBlock Text="{Binding ElementName=dgExportRequests, Path=SelectedItem.CustomerName, StringFormat='Khách hàng: {0}'}" FontWeight="Bold"/>
+                            </StackPanel>
+
+                            <DataGrid Grid.Row="1" x:Name="dgExportDetailsItems" AutoGenerateColumns="False" IsReadOnly="True" Margin="5">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Sản phẩm" Binding="{Binding Product.Name}" Width="*" />
+                                    <DataGridTextColumn Header="SL" Binding="{Binding Quantity}" Width="50" />
+                                    <DataGridTextColumn Header="Đơn giá" Binding="{Binding UnitPrice, StringFormat='N0'}" Width="80" />
+                                    <DataGridTextColumn Header="Thành tiền" Binding="{Binding TotalPrice, StringFormat='N0'}" Width="80" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+                                <Button Content="Từ chối" Click="btnRejectExport_Click" Background="#C0392B" Foreground="White" Padding="15,5" Margin="0,0,10,0"/>
+                                <Button Content="Phê duyệt" Click="btnApproveExport_Click" Background="#27AE60" Foreground="White" Padding="15,5" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>
